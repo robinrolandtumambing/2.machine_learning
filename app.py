@@ -75,7 +75,7 @@ def collect_user_inputs():
         'Seat comfort': st.sidebar.slider('Seat Comfort', 1, 5, 3),
         'Age': st.sidebar.number_input('Age', 7, 100, 18),
         'Flight Distance': st.sidebar.number_input('Flight Distance', 31, 10000, 100),
-        'Business travel': st.sidebar.selectbox('Business Travel', ['Yes', 'No']),
+        'Business Travel': st.sidebar.selectbox('Business Travel', ['Yes', 'No']),
         'Loyal Customer': st.sidebar.selectbox('Loyal Customer', ['Yes', 'No']),
         'Class': st.sidebar.selectbox('Class', ['Eco', 'Eco Plus', 'Business'])
     }
@@ -130,3 +130,24 @@ lime_explainer = LimeTabularExplainer(
 # add app description
 
 # collect user inputs
+st.sidebar.header('User Inputs')
+input_df = collect_user_inputs()
+
+# Display user inputs
+st.write('### User Inputs')
+for key, value in input_df.loc[0].items():
+    st.write(f'{key}: {value}')
+    
+# predict button
+if st.button('Predict'):
+    result, input_df_transformed, lime_explanation = make_predictions(
+        selected_model, preprocessor, input_df, lime_explainer
+        )
+    if result:
+        st.write(f'### Prediction: {result}')
+        
+        # Display LIME explanation
+        st.write('### LIME Explanation')
+        lime_html = lime_explanation.as_html()
+        st.components.v1.html(lime_html, height=800)
+    
