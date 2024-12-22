@@ -1,3 +1,4 @@
 # test function
+
 def example_function():
-    print('This is an example function')
+    print('Hello from example_module')
