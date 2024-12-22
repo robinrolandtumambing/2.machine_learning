@@ -83,7 +83,7 @@ def collect_user_inputs():
     return pd.DataFrame(inputs, index=[0])
     
 # make predictions and explain the results
-def make_predictions(model, preprocessor, input_df, explainer, lime_explainer):
+def make_predictions(model, preprocessor, input_df, lime_explainer):
     
     try:
         # Transform user inputs using the preprocessor
@@ -97,13 +97,13 @@ def make_predictions(model, preprocessor, input_df, explainer, lime_explainer):
             num_features = config.LIME_NUM_FEATURES
         )
         
-        return 'Satisfied' if prediction[0] else 'Not Satisfied', explainer.expected_value, input_df_transformed, lime_explanation
+        return 'Satisfied' if prediction[0] else 'Not Satisfied', input_df_transformed, lime_explanation
         
         
     except Exception as error:
         st.error(f'An error occurred: {str(error)}. Please contact customer service.')
         
-        return None, None, None, None
+        return None, None, None
 
 # Display logo and hero image
 st.sidebar.image('images/logo.png', width=100)
@@ -111,3 +111,22 @@ st.image('images/hero.jpg', use_container_width=True)
 
 st.title('Flight Satisfaction Prediction App')
 st.header('Please Tell Us About Your Experience')
+
+# load models and preprocessor
+lgb_model, dec_tree = load_models()
+preprocessor, flight_df = load_and_fit_preprocessor(config.DATA_PATH)
+
+# model selection
+model_choice = st.sidebar.selectbox('Select Model', ['LightGBM', 'Decision Tree'])
+selected_model = lgb_model if model_choice == 'LightGBM' else dec_tree
+
+# initialize LIME Explainer
+lime_explainer = LimeTabularExplainer(
+    training_data = preprocessor.transform(categorical_encoder(flight_df)),
+    feature_names = flight_df.columns,
+    mode='classification'
+)
+
+# add app description
+
+# collect user inputs
