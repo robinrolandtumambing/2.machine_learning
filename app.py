@@ -104,5 +104,10 @@ def make_predictions(model, preprocessor, input_df, explainer, lime_explainer):
         st.error(f'An error occurred: {str(error)}. Please contact customer service.')
         
         return None, None, None, None
-    
-    
+
+# Display logo and hero image
+st.sidebar.image('images/logo.png', width=100)
+st.image('images/hero.jpg', use_container_width=True)
+
+st.title('Flight Satisfaction Prediction App')
+st.header('Please Tell Us About Your Experience')
