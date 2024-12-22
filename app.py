@@ -104,3 +104,5 @@ def make_predictions(model, preprocessor, input_df, explainer, lime_explainer):
         st.error(f'An error occurred: {str(error)}. Please contact customer service.')
         
         return None, None, None, None
+    
+    
