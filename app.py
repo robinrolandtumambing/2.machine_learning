@@ -150,4 +150,3 @@ if st.button('Predict'):
         st.write('### LIME Explanation')
         lime_html = lime_explanation.as_html()
         st.components.v1.html(lime_html, height=800)
-    
